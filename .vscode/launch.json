@@ -8,8 +8,8 @@
       "type": "java",
       "name": "Launch DemoApplication",
       "request": "launch",
-      "mainClass": "com.trodix.todoapi.DemoApplication",
-      "projectName": "todoapi"
+      "mainClass": "com.trodix.episodate.DemoApplication",
+      "projectName": "episodate"
     },
     {
       "type": "java",
@@ -21,7 +21,7 @@
       "type": "java",
       "name": "Launch DemoApplication",
       "request": "launch",
-      "mainClass": "com.trodix.todoapi.DemoApplication",
+      "mainClass": "com.trodix.episodate.DemoApplication",
       "projectName": "exemple-app"
     }
   ]

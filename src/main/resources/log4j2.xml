@@ -10,7 +10,7 @@
             <PatternLayout pattern="${LOG_PATTERN}" />
         </Console>
         <!-- Rolling File Appender -->
-        <RollingFile name="FileAppender" fileName="logs/todoapi.log" filePattern="logs/todoapi-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="logs/episodate.log" filePattern="logs/episodate-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -25,7 +25,7 @@
             <AppenderRef ref="ConsoleAppender" />
         </Root>
 
-        <Logger name="com.trodix.todoapi" level="info" additivity="false">
+        <Logger name="com.trodix.episodate" level="info" additivity="false">
             <AppenderRef ref="ConsoleAppender" />
             <AppenderRef ref="FileAppender" level="warn" />
         </Logger>

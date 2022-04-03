@@ -1,9 +1,8 @@
-# Todo Api Spring
+# Episodate Rest API
 
-[![Todo API Spring Actions Status](https://github.com/trodix/todo-api-spring/actions/workflows/maven.yml/badge.svg)](https://github.com/trodix/todo-api-spring/actions)
+[![Episodate Rest API Actions Status](https://github.com/trodix/episodate-api/actions/workflows/maven.yml/badge.svg)](https://github.com/trodix/episodate-api/actions)
 
-> This project provide a SpringBoot starter for REST APIs with a Todo dummy app as example.
-
+> This project is a Rest API for the episodate chrome extenion
 
 ## Development setup
 
@@ -35,11 +34,11 @@ Postman tests are available at [./src/test/resources](./src/test/resources)
 
    `mvn clean install`
 
-2. Copy the **target/todoapi.jar** file to the serveur
+2. Copy the **target/episodate.jar** file to the serveur
 
-    `scp -p target/todoapi.jar root@myserver:/opt/todoapi/todoapi.jar`
+    `scp -p target/episodate.jar root@myserver:/opt/episodate/episodate.jar`
 
-3. Create a **application.properties** file at **/opt/todoapi** with production credentials
+3. Create a **application.properties** file at **/opt/episodate** with production credentials
 
     ```properties
     spring.profiles.active=prod
@@ -63,13 +62,13 @@ Postman tests are available at [./src/test/resources](./src/test/resources)
 
 4. Create a new user for this application
 
-    `useradd -r todoapi`
+    `useradd -r episodate`
 
 5. Set permissions to the app directory for the user
 
-    `chown -R todoapi:todoapi /opt/todoapi`
+    `chown -R episodate:episodate /opt/episodate`
 
-6. Create a systemd service in **/etc/systemd/system/todoapi.service** file
+6. Create a systemd service in **/etc/systemd/system/episodate.service** file
 
     ```properties
     [Unit]
@@ -77,8 +76,8 @@ Postman tests are available at [./src/test/resources](./src/test/resources)
     After=syslog.target
 
     [Service]
-    User=todoapi
-    ExecStart=/opt/todoapi/todoapi.jar -Dspring.config.location=/opt/todoapi/application.properties
+    User=episodate
+    ExecStart=/opt/episodate/episodate.jar -Dspring.config.location=/opt/episodate/application.properties
     SuccessExitStatus=143
 
     [Install]
@@ -87,11 +86,11 @@ Postman tests are available at [./src/test/resources](./src/test/resources)
 
 7. Enable the service for booting the app at server boot
 
-    `service todoapi enable`
+    `service episodate enable`
 
 8. Start the service
 
-    `service todoapi start`
+    `service episodate start`
 
 ## Default User
 
@@ -116,7 +115,7 @@ app.default-user.roles = admin
 
 The default password is auto-generated and availlable in the logs of the application:
 
-Example of output: 
+Example of output:
 
 ```log
 =============== Default credentials are: admin / 62e3766b-934f-4db8-a22a-245eafb220f4 ===============
@@ -124,4 +123,4 @@ Example of output:
 
 In production environment, you can get the default credentials log by running this command:
 
-`journalctl -u todoapi.service | grep "Default credentials"`
+`journalctl -u episodate.service | grep "Default credentials"`
