@@ -6,9 +6,16 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Launch DemoApplication",
+      "name": "Launch EpisodateApiApplication",
       "request": "launch",
-      "mainClass": "com.trodix.episodate.DemoApplication",
+      "mainClass": "com.trodix.episodate.EpisodateApiApplication",
+      "projectName": "todoapi"
+    },
+    {
+      "type": "java",
+      "name": "Launch EpisodateAPiApplication",
+      "request": "launch",
+      "mainClass": "com.trodix.episodate.EpisodateAPiApplication",
       "projectName": "episodate"
     },
     {
@@ -19,9 +26,9 @@
     },
     {
       "type": "java",
-      "name": "Launch DemoApplication",
+      "name": "Launch EpisodateAPiApplication",
       "request": "launch",
-      "mainClass": "com.trodix.episodate.DemoApplication",
+      "mainClass": "com.trodix.episodate.EpisodateAPiApplication",
       "projectName": "exemple-app"
     }
   ]

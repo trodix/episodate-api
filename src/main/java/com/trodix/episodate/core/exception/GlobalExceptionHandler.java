@@ -3,22 +3,21 @@ package com.trodix.episodate.core.exception;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpServletResponse;
-
+import org.jsoup.HttpStatusException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
@@ -46,35 +45,42 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public void handleResourceNotFoundException(ResourceNotFoundException exception, HttpServletResponse response)
+    public void handleResourceNotFoundException(final ResourceNotFoundException exception, final HttpServletResponse response)
+            throws IOException {
+
+        response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
+    }
+
+    @ExceptionHandler(HttpStatusException.class)
+    public void handleHttpStatusExceptionException(final HttpStatusException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.NOT_FOUND.value(), exception.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public void handleBadRequestException(BadRequestException exception, HttpServletResponse response)
+    public void handleBadRequestException(final BadRequestException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public void handleAccessDeniedException(AccessDeniedException exception, HttpServletResponse response)
+    public void handleAccessDeniedException(final AccessDeniedException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.FORBIDDEN.value(), exception.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public void handleBadCredentialsException(BadCredentialsException exception, HttpServletResponse response)
+    public void handleBadCredentialsException(final BadCredentialsException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public void handleUnauthorizedException(UnauthorizedException exception, HttpServletResponse response)
+    public void handleUnauthorizedException(final UnauthorizedException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.UNAUTHORIZED.value(), exception.getMessage());
@@ -89,7 +95,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @throws IOException
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public void handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception, HttpServletResponse response)
+    public void handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException exception, final HttpServletResponse response)
             throws IOException {
 
         response.sendError(HttpStatus.BAD_REQUEST.value(), exception.getMessage());
@@ -103,15 +109,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @throws IOException
      */
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status,
-            WebRequest request) {
-        List<String> errorList = ex
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex, final HttpHeaders headers, final HttpStatus status,
+            final WebRequest request) {
+        final List<String> errorList = ex
                 .getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(fieldError -> fieldError.getDefaultMessage())
                 .collect(Collectors.toList());
-        ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errorList);
+        final ErrorDetails errorDetails = new ErrorDetails(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errorList);
         return handleExceptionInternal(ex, errorDetails, headers, errorDetails.getStatus(), request);
     }
 
@@ -123,7 +129,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(Exception.class)
-    public void handleGlobalException(Exception exception, HttpServletResponse response)
+    public void handleGlobalException(final Exception exception, final HttpServletResponse response)
             throws IOException {
 
         // response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An internal server error occured");
