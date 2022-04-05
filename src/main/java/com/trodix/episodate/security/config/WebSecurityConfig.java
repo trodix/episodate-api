@@ -1,17 +1,15 @@
 package com.trodix.episodate.security.config;
 
-import java.util.Arrays;
-
+import java.util.List;
 import com.trodix.episodate.security.jwt.AuthEntryPointJwt;
 import com.trodix.episodate.security.jwt.AuthTokenFilter;
 import com.trodix.episodate.security.service.RoleService;
 import com.trodix.episodate.security.service.UserDetailsServiceImpl;
 import com.trodix.episodate.service.AuthService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -34,6 +32,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 		prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Value("#{'${app.cors.methods}'.split(',')}")
+	private List<String> allowedCorsMethods;
+
+	@Value("#{'${app.cors.origins}'.split(',')}")
+	private List<String> allowedCorsOrigins;
+
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -52,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+	public void configure(final AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
 		this.roleService.initDefaultRoles();
@@ -71,25 +75,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
+	public CorsConfigurationSource corsConfigurationSource() {
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		final CorsConfiguration config = new CorsConfiguration();
 		config.applyPermitDefaultValues();
-		config.setAllowedMethods(
-				Arrays.asList(new String[] {"GET", "POST", "PUT", "DELETE"}));
-		source.registerCorsConfiguration(
-				"/api/**",
-				config);
+		config.setAllowedMethods(allowedCorsMethods);
+		config.setAllowedOrigins(allowedCorsOrigins);
+		source.registerCorsConfiguration("/api/**", config);
 		return source;
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/v2/api-docs", "/swagger-resources/**", "/swagger-ui/**", "/webjars/**",
-						"favicon.ico")
-				.permitAll().antMatchers("/api/public/**").permitAll().anyRequest().authenticated();
+	protected void configure(final HttpSecurity http) throws Exception {
+		http.cors().configurationSource(corsConfigurationSource())
+				.and()
+				.csrf().disable()
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+				.and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authorizeRequests()
+				.antMatchers("/api/public/**").permitAll()
+				.antMatchers("/api/**").authenticated()
+				.anyRequest().permitAll();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
