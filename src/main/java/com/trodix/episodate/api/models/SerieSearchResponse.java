@@ -20,4 +20,11 @@ public class SerieSearchResponse {
         this.urls.add(url);
     }
 
+    public void addUrl(final List<String> urls) {
+        if (this.urls == null) {
+            this.urls = new ArrayList<>();
+        }
+        this.urls.addAll(urls);
+    }
+
 }
