@@ -33,7 +33,7 @@ public class BflixWatchScrapperAdapter implements ScrapperAdapter {
             response.setSeason(season);
             response.setEpisode(episode);
             response.setEpisodeName(serieListEpisodePage.attr("title"));
-            response.addUrl(SCRAPPER_BASE_URL + "/" + episodePageUrlElement.attr("content"));
+            response.addUrl(episodePageUrlElement.attr("content"));
 
             return response;
 
