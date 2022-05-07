@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.trodix</groupId>
 	<artifactId>episodate</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>Episodate REST API</name>
 	<description>Rest API for the episodate chrome extension</description>
 

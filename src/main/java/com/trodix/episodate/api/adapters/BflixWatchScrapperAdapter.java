@@ -8,7 +8,9 @@ import com.trodix.episodate.core.exception.ResourceNotFoundException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class BflixWatchScrapperAdapter implements ScrapperAdapter {
 
     public static final String SCRAPPER_BASE_URL = "https://bflix.watch";
@@ -38,6 +40,7 @@ public class BflixWatchScrapperAdapter implements ScrapperAdapter {
             return response;
 
         } catch (final IOException e) {
+            log.error(MessageFormat.format("The serie {0} season {1}, episode {2} was not found.", serieName, season, episode), e);
             throw new ResourceNotFoundException(MessageFormat.format("The serie {0} season {1}, episode {2} was not found.", serieName, season, episode));
         }
 

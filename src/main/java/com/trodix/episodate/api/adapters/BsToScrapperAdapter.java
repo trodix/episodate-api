@@ -9,7 +9,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class BsToScrapperAdapter implements ScrapperAdapter {
 
     public static final String SCRAPPER_BASE_URL = "https://bs.to";
@@ -53,6 +55,7 @@ public class BsToScrapperAdapter implements ScrapperAdapter {
             throw new ResourceNotFoundException(MessageFormat.format("The serie {0} season {1}, episode {2} was not found.", serieName, season, episode));
 
         } catch (final IOException e) {
+            log.error(MessageFormat.format("The serie {0} season {1}, episode {2} was not found.", serieName, season, episode), e);
             throw new ResourceNotFoundException(MessageFormat.format("The serie {0} season {1}, episode {2} was not found.", serieName, season, episode), e);
         }
 
