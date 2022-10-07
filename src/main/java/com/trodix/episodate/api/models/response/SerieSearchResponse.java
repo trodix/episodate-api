@@ -1,4 +1,4 @@
-package com.trodix.episodate.api.models;
+package com.trodix.episodate.api.models.response;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <scrapperConfigList>
+        <scrapperConfig baseUrl="https://tvshows88.org">
+            <patternConfig>
+                <patternDefinition>/episode/${serieName}/-season-/${seasonNumber}/-episode-/${episodeNumber}</patternDefinition>
+                <patternBindings>
+                    <bind patternVariable="seasonNumber" numberFormat="%1d" />
+                    <bind patternVariable="episodeNumber" numberFormat="%1d" />
+                </patternBindings>
+            </patternConfig>
+        </scrapperConfig>
+
+        <!-- <scrapper-config base-url="https://bs.to">
+            <pattern-config>
+                <pattern-definition>/serie/${serieName}/${seasonNumber}/en</pattern-definition>
+                <pattern-bindings>
+                    <bind patternVariable="serieName" />
+                    <bind patternVariable="seasonNumber" numberFormat="%1d" />
+                </pattern-bindings>
+            </pattern-config>
+        </scrapper-config> -->
+    </scrapperConfigList>
+</root>
